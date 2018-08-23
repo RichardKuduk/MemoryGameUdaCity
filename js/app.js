@@ -27,13 +27,20 @@ function restart()
   run = false;
   // reset moves
   moves = 0;
+  // FIX -> A restart button allows the player to reset the game board, the timer, and the star rating.
+  stop();
+  document.getElementById("demo").innerHTML = "0";
   // assign to html
   $('#moves').html(moves);
   // add stars
-  var stars = document.getElementsByClassName("stars")[0];
-  stars.appendChild = '<i class="fa fa-star"></i>';
-  stars.appendChild = '<i class="fa fa-star"></i>';
-  stars.appendChild = '<i class="fa fa-star"></i>';
+  var stars = document.getElementById("stars");
+  // FIX -> A restart button allows the player to reset the game board, the timer, and the star rating.
+  stars.innerHTML = "";
+  for (var i=0; i <3; i++){
+    let temp = document.createElement("LI");
+    temp.innerHTML = '<i class="fa fa-star"></i>';
+    stars.appendChild(temp);
+  }
   // Hide modal
   el = document.getElementById("overlay");
   el.style.visibility = "hidden";
@@ -99,39 +106,52 @@ var stop = function() {
 
 
 function flip(e){
+  console.log($('#demo').text());
   var card = e.target;
   //ES6 destructuring
   let currentCard = Array.prototype.slice.call(card.parentElement.children).indexOf(card);
-  // check if this card was open before
-  if(previousCard == -1){
+  if ( $(card).hasClass("match") || $(card).is("i") ) {
+    // card was clicked before dont do anything
+    console.log(card);
+  } else if(previousCard == -1){
+    // check if this card was open before
     if (!run){
       start();
       run = true;
     }
     previousCard = currentCard;
     card.classList.add("match");
-  }else{
+  } else {
     moves++;
-    console.log(moves);
+    // console.log(moves);
     $('#moves').html(moves);
-    if(moves >= 20)
+
+    if(moves == 15 || moves == 25 || moves == 40)
     {
       // get  the stars and remove if 10 inncoret moves
       var stars = document.getElementsByClassName("stars")[0];
       stars.removeChild(stars.childNodes[0]);
     }
     var preCard = $(".card")[previousCard];
-    // get the class name of this obj
-    var currentShapeClass = card.children[0].classList[1];
     // get class name of prev obj
     var previousShapeClass = preCard.children[0].classList[1];
+    // get the class name of this obj
+    var currentShapeClass =  card.children[0].classList[1];
+
     // console.log(previousShapeClass + " pre");
     // console.log(currentShapeClass + " curr");
     card.classList.add("match");
     if(currentShapeClass == previousShapeClass){
       winner++;
-      if(winner == 8){
+      console.log(winner);
+      if(winner == 1){
         overlay();
+
+        $('#timeR').html($('#demo').text());
+        $('#pts').html($('#moves').text());
+        let s = $("#stars").clone();
+        $("#s").append(s);
+
         stop();
       }
     }else{
@@ -142,10 +162,6 @@ function flip(e){
         $(card).removeClass("match");
       }, 500);
     }
-
-
-
-
 
     previousCard = -1;
   }

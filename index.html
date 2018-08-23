@@ -16,7 +16,7 @@
         </header>
 
         <section class="score-panel">
-        	<ul class="stars">
+        	<ul class="stars" id="stars">
         		<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li>
         		<li><i class="fa fa-star"></i></li>
@@ -39,7 +39,15 @@
     <div id="overlay">
          <div>
               <p>You won! </p>
-              <p id="pts">Moves: </p>
+              <div class="line">
+                <span>Moves: </span>
+                <span id="pts">Moves: </span>
+              </div>
+              <div class="line">
+                <span>Time : </span>
+                <span id="timeR"></span>
+              </div>
+              <div class="line" id="s"></div>
                <button type="button" onclick="restart()">Play Again</button>
          </div>
     </div>
